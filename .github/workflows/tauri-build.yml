@@ -56,7 +56,7 @@ jobs:
             patchelf
 
       - name: Install JS deps
-        run: npm intall
+        run: npm install
 
       - name: Tauri build
         uses: tauri-apps/tauri-action@v0
