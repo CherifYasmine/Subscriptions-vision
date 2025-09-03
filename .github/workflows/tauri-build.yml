@@ -78,8 +78,12 @@ jobs:
         with: { path: dist-artifacts }
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist-artifacts/**/*
-          draft: false
-          prerelease: false
+          files: |
+            dist-artifacts/**/*.msi
+            dist-artifacts/**/*setup.exe
+            dist-artifacts/**/*.dmg
+            dist-artifacts/**/**/*AppImage
+            dist-artifacts/**/*.deb
+            dist-artifacts/**/*.rpm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
