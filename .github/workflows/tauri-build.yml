@@ -4,7 +4,7 @@ on:
   workflow_dispatch: {}
   push:
     tags:
-      - "v1.0.1"
+      - "v*.*.*"     # build on any semantic version tag
 
 jobs:
   build:
@@ -29,8 +29,19 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Setup Rust
+      - name: Setup Rust (stable)
         uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Cargo registry
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-reg-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache Cargo index
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Install Linux dependencies
         if: matrix.linux
@@ -44,7 +55,6 @@ jobs:
             librsvg2-dev \
             patchelf
 
-
       - name: Install JS deps
         run: npm ci
 
@@ -52,14 +62,10 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         with:
           args: --ci
-        env:
-          TAURI_PRIVATE_KEY: ""
-          TAURI_KEY_PASSWORD: ""
 
       - name: Upload bundles
         uses: actions/upload-artifact@v4
         with:
-          name: subvision-${{ runner.os }}
-          path: |
-            src-tauri/target/release/bundle/**/*
+          name: subvision-${{ runner.os }}-${{ github.ref_name }} # e.g. subvision-Windows-v1.0.0
+          path: src-tauri/target/release/bundle/**/*
           if-no-files-found: error
