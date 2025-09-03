@@ -5,7 +5,7 @@ No accounts. No cloud. Your data stays on your machine.
 
 Built with React + Vite + Tailwind and Tauri (Rust).
 
-Track all your recurring subscriptions **offline** — no accounts, no cloud, no tracking.  
+Track all your recurring subscriptions **offline**, no accounts, no cloud, no tracking.  
 Export/Import your data anytime, and get desktop notifications before renewals.
 
 ---
